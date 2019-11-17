@@ -1,0 +1,78 @@
+---
+title: "Output in one babel block as input for another block"
+date: 2019-11-13T18:51:33+10:00
+draft: false
+---
+
+* Input and Output Wrangle
+
+** Python Input for Python Output
+
+#+name: o1
+#+begin_src python :exports both
+  # This is one of the python code output
+  return [i for i in range(20)]
+#+end_src
+
+#+RESULTS: o1
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+
+
+
+
+#+name: i1
+#+begin_src python :var input=o1 :exports both
+  # The python code here will take the python code output above as input
+  return [ i**2 for i in input]
+#+end_src
+
+#+RESULTS: i1
+| 0 | 1 | 4 | 9 | 16 | 25 | 36 | 49 | 64 | 81 | 100 | 121 | 144 | 169 | 196 | 225 | 256 | 289 | 324 | 361 |
+
+
+
+** Ruby Output for Python Input
+
+
+#+name: o2
+#+begin_src ruby :exports both
+  # This is one of the ruby code output
+  require 'date'
+  "This file was last evaluated on #{Date.today}"
+#+end_src
+
+#+RESULTS: o2
+: This file was last evaluated on 2019-11-13
+
+
+#+name: i2
+#+begin_src python :exports both :var input=o2
+  # The python code here will take the ruby code output as input
+  return input[10:-1]
+#+end_src
+
+#+RESULTS: i2
+: was last evaluated on 2019-11-1
+
+#+begin_src lisp :exports both
+  (princ "This is the common lisp")
+#+end_src
+
+#+RESULTS:
+: This is the common lisp
+
+#+name: o3
+#+begin_src emacs-lisp :tangle yes :exports both
+'(1 2 3 4 5)
+#+end_src
+
+#+RESULTS: o3
+| 1 | 2 | 3 | 4 | 5 |
+
+#+name: i3
+#+begin_src clojure :var input=o3 :exports both
+(rest input)
+#+end_src
+
+#+RESULTS: i3
+: nil(2 3 4 5)
